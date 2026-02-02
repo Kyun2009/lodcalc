@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>대미지 계산기</title>
-  <link href="/style.css" rel="stylesheet" />
+  <link href="/style.css?v=20260202-5" rel="stylesheet" />
 </head>
 <body class="lod-theme">
   <main class="container">
     <header class="hero">
-      <p class="crest">ASGARD ARCANA</p>
+      <a class="contact-link" href="/contact.html">문의하기</a>
+      <p class="crest"><a class="crest-link" href="/index.html">The Legend of Darkness</a></p>
       <h1>어둠의전설 대미지 계산기</h1>
       <p>신성/암흑 상성과 마력 순환을 반영한 전투 계산 패널</p>
       <div class="ornament" aria-hidden="true"></div>
@@ -31,12 +32,24 @@
     <section class="panel">
       <h2>몬스터 설정</h2>
       <div class="grid">
+        <label>몬스터 그룹
+          <select id="monsterGroup"></select>
+        </label>
+        <label>몬스터 검색
+          <input id="monsterSearch" type="text" placeholder="이름 검색" />
+        </label>
+        <label>몬스터 프리셋
+          <select id="monsterPreset"></select>
+        </label>
         <label>몬스터 방어 속성
           <select id="monsterElement">
             <option value="일반(화수토풍)">일반(화수토풍)</option>
             <option value="암" selected>암</option>
             <option value="성">성</option>
           </select>
+        </label>
+        <label>몬스터 최대 HP
+          <input id="monsterHp" type="number" min="0" value="0" />
         </label>
         <label>몬스터 방어력 (ac)
           <input id="monsterAc" type="number" value="-8" />
@@ -82,14 +95,19 @@
       </div>
       <div class="actions">
         <label class="global-toggle">
-          <input id="globalNaru" type="checkbox" />
           <span>나르 전체 적용</span>
+          <input id="globalNaru" type="checkbox" />
         </label>
         <button id="addSkillBtn" type="button">스킬 추가</button>
       </div>
+      <div class="monster-tag" id="yuridTag">
+        <p class="monster-tag-title">백작유리드 대표 몬스터</p>
+        <div class="monster-tag-list" id="yuridTagList"></div>
+      </div>
     </section>
+
   </main>
 
-  <script defer src="/main.js"></script>
+  <script defer src="/main.js?v=20260202-5"></script>
 </body>
 </html>

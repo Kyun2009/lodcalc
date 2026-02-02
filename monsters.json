@@ -1,0 +1,34 @@
+[
+  {
+    "id": "yurid-jonathan",
+    "group": "백작유리드",
+    "name": "조나단",
+    "element": "암",
+    "maxHp": 1637309,
+    "ac": -8
+  },
+  {
+    "id": "yurid-elisabeth",
+    "group": "백작유리드",
+    "name": "엘리자벳",
+    "element": "암",
+    "maxHp": 654763,
+    "ac": -8
+  },
+  {
+    "id": "yurid-soan",
+    "group": "백작유리드",
+    "name": "소안",
+    "element": "암",
+    "maxHp": 654732,
+    "ac": -8
+  },
+  {2
+    "id": "yurid-transbu",
+    "group": "백작유리드",
+    "name": "트랜스부",
+    "element": "암",
+    "maxHp": 523849,
+    "ac": -8
+  }
+]

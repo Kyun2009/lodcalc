@@ -22,6 +22,14 @@ const elementMultiplier = {
 };
 
 const attackElements = ["성", "암"];
+const customMonster = { id: "custom", name: "직접 입력", group: "직접 입력", element: "암", maxHp: 0, ac: -8 };
+const fallbackMonsters = [
+  { id: "yurid-jonathan", group: "백작유리드", name: "조나단", element: "암", maxHp: 1637309, ac: -8 },
+  { id: "yurid-elisabeth", group: "백작유리드", name: "엘리자벳", element: "암", maxHp: 654763, ac: -8 },
+  { id: "yurid-soan", group: "백작유리드", name: "소안", element: "암", maxHp: 654732, ac: -8 },
+  { id: "yurid-transbu", group: "백작유리드", name: "트랜스부", element: "암", maxHp: 523849, ac: -8 },
+];
+
 const cursePresets = {
   none: { label: "없음", ac: 0, magicDefense: 0 },
   rento: { label: "렌토, 렌티아", ac: 20, magicDefense: 0 },
@@ -32,25 +40,11 @@ const cursePresets = {
   anathema: { label: "아나테마", ac: 75, magicDefense: -30 },
 };
 
+let monsterPresets = [];
 let skills = [
-  {
-    name: "홀리드래곤",
-    coeff: 1.8,
-    element: "성",
-    mpCost: 12960,
-  },
-  {
-    name: "메테오",
-    coeff: 1.5,
-    element: "암",
-    mpCost: 12960,
-  },
-  {
-    name: "라그나로크",
-    coeff: 0.375,
-    element: "암",
-    mpCost: 0,
-  },
+  { name: "홀리드래곤", coeff: 1.8, element: "성", mpCost: 12960 },
+  { name: "메테오", coeff: 1.5, element: "암", mpCost: 12960 },
+  { name: "라그나로크", coeff: 0.375, element: "암", mpCost: 0 },
 ];
 
 const $ = (id) => document.getElementById(id);
@@ -69,7 +63,11 @@ const esc = (v) =>
 const stateEls = {
   maxMana: $("maxMana"),
   meditationStage: $("meditationStage"),
+  monsterGroup: $("monsterGroup"),
+  monsterSearch: $("monsterSearch"),
+  monsterPreset: $("monsterPreset"),
   monsterElement: $("monsterElement"),
+  monsterHp: $("monsterHp"),
   monsterAc: $("monsterAc"),
   cursePreset: $("cursePreset"),
   extraDebuff: $("extraDebuff"),
@@ -78,7 +76,93 @@ const stateEls = {
   skillBody: $("skillBody"),
   addSkillBtn: $("addSkillBtn"),
   globalNaru: $("globalNaru"),
+  yuridTagList: $("yuridTagList"),
 };
+
+function normalizeMonster(monster, index) {
+  return {
+    id: String(monster.id ?? `monster-${index + 1}`),
+    group: String(monster.group ?? "기타"),
+    name: String(monster.name ?? `몬스터 ${index + 1}`),
+    element: monster.element === "성" ? "성" : "암",
+    maxHp: Number.isFinite(Number(monster.maxHp)) ? Number(monster.maxHp) : 0,
+    ac: Number.isFinite(Number(monster.ac)) ? Number(monster.ac) : -8,
+  };
+}
+
+function getMonsterById(id) {
+  if (id === customMonster.id) return customMonster;
+  return monsterPresets.find((monster) => monster.id === id) ?? customMonster;
+}
+
+function getFilteredMonsters() {
+  const group = stateEls.monsterGroup.value;
+  const query = stateEls.monsterSearch.value.trim();
+  return monsterPresets.filter((monster) => {
+    const groupMatch = group === "all" || monster.group === group;
+    const queryMatch = !query || monster.name.includes(query);
+    return groupMatch && queryMatch;
+  });
+}
+
+function renderMonsterGroupOptions() {
+  const groups = Array.from(new Set(monsterPresets.map((monster) => monster.group))).sort((a, b) => a.localeCompare(b, "ko"));
+  const current = stateEls.monsterGroup.value || "all";
+  stateEls.monsterGroup.innerHTML = [
+    '<option value="all">전체</option>',
+    ...groups.map((group) => `<option value="${esc(group)}">${esc(group)}</option>`),
+  ].join("");
+  stateEls.monsterGroup.value = groups.includes(current) || current === "all" ? current : "all";
+}
+
+function renderMonsterPresetOptions() {
+  const filtered = getFilteredMonsters();
+  const current = stateEls.monsterPreset.value || customMonster.id;
+  stateEls.monsterPreset.innerHTML = [
+    `<option value="${customMonster.id}">${customMonster.name}</option>`,
+    ...filtered.map(
+      (monster) =>
+        `<option value="${esc(monster.id)}">${esc(monster.group)} - ${esc(monster.name)} (HP ${format(monster.maxHp)})</option>`,
+    ),
+  ].join("");
+
+  const hasCurrent = current === customMonster.id || filtered.some((monster) => monster.id === current);
+  stateEls.monsterPreset.value = hasCurrent ? current : customMonster.id;
+}
+
+function applyMonsterPreset() {
+  const selected = getMonsterById(stateEls.monsterPreset.value);
+  if (selected.id === customMonster.id) return;
+  stateEls.monsterElement.value = selected.element;
+  stateEls.monsterHp.value = String(selected.maxHp);
+  stateEls.monsterAc.value = String(selected.ac);
+}
+
+function renderYuridTag(skillMaxDamages = []) {
+  const yuridMonsters = monsterPresets.filter((monster) => monster.group === "백작유리드");
+  if (yuridMonsters.length === 0) {
+    stateEls.yuridTagList.innerHTML = "<div class=\"monster-tag-item\">데이터 없음</div>";
+    return;
+  }
+
+  stateEls.yuridTagList.innerHTML = yuridMonsters
+    .map((monster) => {
+      const skillTags = skillMaxDamages
+        .map((skill) => {
+          const canKill = skill.maxDamage >= monster.maxHp;
+          return `<span class="${canKill ? "skill-hit" : "skill-miss"}">${esc(skill.name)}</span>`;
+        })
+        .join("");
+
+      return `
+        <div class="monster-tag-item">
+          <div>${esc(monster.name)}: HP ${format(monster.maxHp)}</div>
+          <div class="monster-skill-box">${skillTags || '<span class="skill-miss">스킬 없음</span>'}</div>
+        </div>
+      `;
+    })
+    .join("");
+}
 
 function getMultiplier(skillElement, monsterElement) {
   const key = `${skillElement}${monsterElement}`;
@@ -88,13 +172,15 @@ function getMultiplier(skillElement, monsterElement) {
 function recalc() {
   const maxMana = numVal(stateEls.maxMana, 0);
   const stage = Math.min(10, Math.max(0, Math.floor(numVal(stateEls.meditationStage, 0))));
-  if (String(stage) !== stateEls.meditationStage.value) stateEls.meditationStage.value = stage;
+  if (String(stage) !== stateEls.meditationStage.value) stateEls.meditationStage.value = String(stage);
 
   const oneTickRecovery = maxMana * 0.2;
   const twoTickRecovery = maxMana * 0.4;
   const meditationRecovery = maxMana * (meditationRateByStage[stage] ?? 0);
 
+  const selectedMonster = getMonsterById(stateEls.monsterPreset.value);
   const ac = numVal(stateEls.monsterAc, 0);
+  const monsterHp = numVal(stateEls.monsterHp, 0);
   const selectedCurse = cursePresets[stateEls.cursePreset.value] ?? cursePresets.none;
   const curse = selectedCurse.ac;
   const magicDefenseFactor = (100 - selectedCurse.magicDefense) / 100;
@@ -105,9 +191,12 @@ function recalc() {
   const naruEnabled = stateEls.globalNaru.checked;
 
   stateEls.charDerived.textContent = `1틱 회복량: ${format(oneTickRecovery)} / 2틱 회복량: ${format(twoTickRecovery)} / 메디 회복량: ${format(meditationRecovery)}`;
-  stateEls.monsterDerived.textContent = `저주: ${selectedCurse.label} / 방깎 합계: ${format(defenseTotal)} (계수 ${defenseFactor.toFixed(2)}) / 마법방어 계수: ${magicDefenseFactor.toFixed(2)}`;
+  stateEls.monsterDerived.textContent =
+    `몬스터: ${selectedMonster.name} / 최대 HP: ${format(monsterHp)} / 저주: ${selectedCurse.label} / ` +
+    `방깎 합계: ${format(defenseTotal)} (계수 ${defenseFactor.toFixed(2)}) / 마법방어 계수: ${magicDefenseFactor.toFixed(2)}`;
 
   stateEls.skillBody.innerHTML = "";
+  const skillMaxDamages = [];
 
   skills.forEach((skill, index) => {
     const multiplier = getMultiplier(skill.element, monsterElement);
@@ -120,6 +209,7 @@ function recalc() {
     const oneTickNaru = naruEnabled ? oneTick * 2 : null;
     const twoTickNaru = naruEnabled ? twoTick * 2 : null;
     const hotTime = maxDamage * 1.2;
+    skillMaxDamages.push({ name: skill.name, maxDamage });
 
     const row = document.createElement("tr");
     row.dataset.index = String(index);
@@ -158,17 +248,53 @@ function recalc() {
     `;
     stateEls.skillBody.appendChild(noteRow);
   });
+
+  renderYuridTag(skillMaxDamages);
+}
+
+async function loadMonsterData() {
+  try {
+    const response = await fetch("/monsters.json?v=20260202-1", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    const list = Array.isArray(data) ? data : Array.isArray(data.monsters) ? data.monsters : [];
+    monsterPresets = list.map(normalizeMonster);
+  } catch (error) {
+    monsterPresets = fallbackMonsters.map(normalizeMonster);
+    console.warn("monsters.json 로드 실패, 기본 몬스터로 대체", error);
+  }
+
+  renderMonsterGroupOptions();
+  renderMonsterPresetOptions();
 }
 
 [
   stateEls.maxMana,
   stateEls.meditationStage,
   stateEls.monsterElement,
+  stateEls.monsterHp,
   stateEls.monsterAc,
   stateEls.cursePreset,
   stateEls.extraDebuff,
   stateEls.globalNaru,
 ].forEach((el) => el.addEventListener("input", recalc));
+
+stateEls.monsterGroup.addEventListener("input", () => {
+  renderMonsterPresetOptions();
+  applyMonsterPreset();
+  recalc();
+});
+
+stateEls.monsterSearch.addEventListener("input", () => {
+  renderMonsterPresetOptions();
+  applyMonsterPreset();
+  recalc();
+});
+
+stateEls.monsterPreset.addEventListener("change", () => {
+  applyMonsterPreset();
+  recalc();
+});
 
 stateEls.skillBody.addEventListener("input", (event) => {
   const target = event.target;
@@ -203,13 +329,11 @@ stateEls.skillBody.addEventListener("click", (event) => {
 });
 
 stateEls.addSkillBtn.addEventListener("click", () => {
-  skills.push({
-    name: "새 스킬",
-    coeff: 1,
-    element: "성",
-    mpCost: 0,
-  });
+  skills.push({ name: "새 스킬", coeff: 1, element: "성", mpCost: 0 });
   recalc();
 });
 
-recalc();
+(async function init() {
+  await loadMonsterData();
+  recalc();
+})();

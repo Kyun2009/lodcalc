@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>문의하기</title>
+  <link href="/style.css?v=20260202-7" rel="stylesheet" />
+</head>
+<body class="lod-theme">
+  <main class="container">
+    <header class="hero">
+      <a class="contact-link" href="/index.html">계산기로 돌아가기</a>
+      <p class="crest"><a class="crest-link" href="/index.html">The Legend of Darkness</a></p>
+      <h1>문의하기</h1>
+      <p>문의사항을 남겨주시면 확인 후 답변드릴게요.</p>
+      <div class="ornament" aria-hidden="true"></div>
+    </header>
+
+    <section class="panel">
+      <h2>문의 안내</h2>
+      <div class="contact-layout">
+        <article class="contact-card">
+          <h3>바로 문의하기</h3>
+          <p>이메일과 제목을 입력하고 바로 접수할 수 있어요.</p>
+          <form class="contact-form" action="https://formspree.io/f/xnjdopqo" method="POST">
+            <label>이메일
+              <input type="email" name="email" required placeholder="you@example.com" />
+            </label>
+            <label>제목
+              <input type="text" name="subject" required placeholder="문의 제목" />
+            </label>
+            <label>내용
+              <textarea name="message" rows="4" required placeholder="문의 내용을 적어주세요"></textarea>
+            </label>
+            <div class="actions">
+              <button type="submit">문의 보내기</button>
+            </div>
+          </form>
+        </article>
+        <article class="contact-card">
+          <h3>문의 시 포함하면 좋은 정보</h3>
+          <ul class="contact-list">
+            <li>캐릭터 최대 마력 / 메디 단계</li>
+            <li>몬스터 이름 / 저주 설정</li>
+            <li>기대 대미지와 실제 대미지 차이</li>
+          </ul>
+        </article>
+      </div>
+      <div class="contact-note">
+        <strong>안내:</strong> 문의 내용은 순차 확인 후 답변드려요.
+      </div>
+    </section>
+  </main>
+</body>
+</html>
