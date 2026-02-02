@@ -1,14 +1,95 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+  <title>대미지 계산기</title>
+  <link href="/style.css" rel="stylesheet" />
 </head>
-<body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+<body class="lod-theme">
+  <main class="container">
+    <header class="hero">
+      <p class="crest">ASGARD ARCANA</p>
+      <h1>어둠의전설 대미지 계산기</h1>
+      <p>신성/암흑 상성과 마력 순환을 반영한 전투 계산 패널</p>
+      <div class="ornament" aria-hidden="true"></div>
+    </header>
+
+    <section class="panel">
+      <h2>캐릭터 설정</h2>
+      <div class="grid">
+        <label>캐릭터 최대 마력
+          <input id="maxMana" type="number" min="0" value="800000" />
+        </label>
+        <label>메디테이션 단계 (0~10)
+          <input id="meditationStage" type="number" min="0" max="10" value="5" />
+        </label>
+      </div>
+      <div class="derived" id="charDerived"></div>
+    </section>
+
+    <section class="panel">
+      <h2>몬스터 설정</h2>
+      <div class="grid">
+        <label>몬스터 방어 속성
+          <select id="monsterElement">
+            <option value="일반(화수토풍)">일반(화수토풍)</option>
+            <option value="암" selected>암</option>
+            <option value="성">성</option>
+          </select>
+        </label>
+        <label>몬스터 방어력 (ac)
+          <input id="monsterAc" type="number" value="-8" />
+        </label>
+        <label>저주 선택
+          <select id="cursePreset">
+            <option value="none">없음</option>
+            <option value="rento">렌토, 렌티아 (AC +20 / 마법방어 0%)</option>
+            <option value="bardo">바르도, 바르데아 (AC +35 / 마법방어 -10%)</option>
+            <option value="defreco">데프레코, 데프레타 (AC +50 / 마법방어 -20%)</option>
+            <option value="pravo" selected>프라보, 프라베라 (AC +65 / 마법방어 -30%)</option>
+            <option value="mark">어둠의각인 (AC +70 / 마법방어 -30%)</option>
+            <option value="anathema">아나테마 (AC +75 / 마법방어 -30%)</option>
+          </select>
+        </label>
+        <label>다른 방깎
+          <input id="extraDebuff" type="number" value="0" />
+        </label>
+      </div>
+      <div class="derived" id="monsterDerived"></div>
+    </section>
+
+    <section class="panel">
+      <h2>스킬 대미지</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>스킬 명</th>
+              <th>계수</th>
+              <th>속성</th>
+              <th>소모 MP</th>
+              <th>1틱(솔샷)</th>
+              <th>2틱(샷비)</th>
+              <th>1틱 나르</th>
+              <th>2틱 나르</th>
+              <th>최대 대미지</th>
+              <th>핫타임</th>
+            </tr>
+          </thead>
+          <tbody id="skillBody"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <label class="global-toggle">
+          <input id="globalNaru" type="checkbox" />
+          <span>나르 전체 적용</span>
+        </label>
+        <button id="addSkillBtn" type="button">스킬 추가</button>
+      </div>
+    </section>
+  </main>
+
+  <script defer src="/main.js"></script>
 </body>
 </html>

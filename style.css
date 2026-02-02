@@ -1,1 +1,332 @@
-/* Add styles here */
+:root {
+  --bg-1: #17120f;
+  --bg-2: #2b2019;
+  --panel: #f5ecd8;
+  --panel-ink: #2b2218;
+  --line: #8e6f46;
+  --line-soft: #c9b086;
+  --gold: #cfa357;
+  --gold-bright: #f7d998;
+  --blood: #7b2e22;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--panel-ink);
+  font-family: "Nanum Myeongjo", "AppleMyungjo", "Batang", serif;
+  background:
+    radial-gradient(1200px 500px at 50% -40px, #4e3724 0%, transparent 65%),
+    linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 70%, #130f0c 100%);
+  min-height: 100vh;
+}
+
+.lod-theme::before,
+.lod-theme::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.lod-theme::before {
+  inset: 0;
+  opacity: 0.25;
+  background:
+    radial-gradient(circle at 50% 25%, rgba(247, 217, 152, 0.26) 0 2px, transparent 2px 100%),
+    radial-gradient(circle at 50% 25%, transparent 0 92px, rgba(247, 217, 152, 0.2) 92px 94px, transparent 94px 100%),
+    radial-gradient(circle at 50% 25%, transparent 0 126px, rgba(207, 163, 87, 0.18) 126px 128px, transparent 128px 100%),
+    radial-gradient(circle at 50% 25%, transparent 0 156px, rgba(207, 163, 87, 0.15) 156px 157px, transparent 157px 100%);
+  background-repeat: no-repeat;
+}
+
+.lod-theme::after {
+  width: 220px;
+  height: 220px;
+  right: 18px;
+  bottom: 16px;
+  opacity: 0.2;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, transparent 0 78px, rgba(247, 217, 152, 0.7) 78px 80px, transparent 80px 100%),
+    conic-gradient(from 0deg, rgba(247, 217, 152, 0.6) 0 10deg, transparent 10deg 50deg, rgba(247, 217, 152, 0.6) 50deg 60deg, transparent 60deg 100deg, rgba(247, 217, 152, 0.6) 100deg 110deg, transparent 110deg 150deg, rgba(247, 217, 152, 0.6) 150deg 160deg, transparent 160deg 200deg, rgba(247, 217, 152, 0.6) 200deg 210deg, transparent 210deg 250deg, rgba(247, 217, 152, 0.6) 250deg 260deg, transparent 260deg 300deg, rgba(247, 217, 152, 0.6) 300deg 310deg, transparent 310deg 350deg, rgba(247, 217, 152, 0.6) 350deg 360deg);
+  filter: blur(0.3px);
+}
+
+.container {
+  position: relative;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 24px 14px 44px;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 220px;
+  width: 180px;
+  height: 420px;
+  opacity: 0.14;
+  pointer-events: none;
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, rgba(247, 217, 152, 0.8), transparent 45%),
+    repeating-linear-gradient(0deg, rgba(247, 217, 152, 0.75) 0 2px, transparent 2px 22px);
+}
+
+.hero {
+  padding: 22px 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, #f6eddc 0%, #ead6b0 70%, #dfbf8c 100%);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.35), inset 0 0 0 1px #f9e9c8;
+}
+
+.crest {
+  margin: 0;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  color: var(--blood);
+  font-weight: 700;
+}
+
+.hero h1 {
+  margin: 6px 0 0;
+  font-size: clamp(24px, 4vw, 36px);
+  color: #21180f;
+}
+
+.hero p {
+  margin: 8px 0 0;
+  color: #4b3c2b;
+}
+
+.ornament {
+  margin-top: 12px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-bright), var(--gold), transparent);
+}
+
+.panel {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 0 1px #f9eccc, 0 8px 22px rgba(0, 0, 0, 0.2);
+}
+
+.panel h2 {
+  margin: 0 0 10px;
+  color: #2f2214;
+  font-size: 19px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 14px;
+  color: #3a2d1f;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  padding: 9px 10px;
+  font-size: 14px;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  color: #281e14;
+  background: #fff9ea;
+}
+
+.cell-input {
+  width: 100%;
+  min-width: 86px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(207, 163, 87, 0.22);
+}
+
+.derived {
+  margin-top: 9px;
+  font-size: 13px;
+  color: #5d4732;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 910px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff9ea;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e1cfab;
+  font-size: 14px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(180deg, #ecd7af 0%, #dfbd84 100%);
+  color: #2f1f0e;
+  font-weight: 700;
+}
+
+th:first-child,
+td:first-child,
+th:nth-child(3),
+td:nth-child(3) {
+  text-align: left;
+}
+
+tbody tr:nth-child(4n + 1),
+tbody tr:nth-child(4n + 2) {
+  background: #fff6e2;
+}
+
+.skill-note {
+  text-align: left;
+  font-size: 12px;
+  color: #644a31;
+}
+
+.skill-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.skill-meta--stack {
+  display: grid;
+  gap: 6px;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.meta-label {
+  font-weight: 700;
+}
+
+.meta-value {
+  padding: 3px 8px;
+  border: 1px solid #dbc49b;
+  border-radius: 999px;
+  background: #fff4de;
+}
+
+.naru-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.delete-btn {
+  margin-left: auto;
+  border: 1px solid #a56a4a;
+  border-radius: 8px;
+  padding: 4px 10px;
+  background: #f6d2bf;
+  color: #5a2812;
+  cursor: pointer;
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, #efd9b2 0%, #ddb677 100%);
+  color: #2a1a0d;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  filter: brightness(1.03);
+}
+
+.global-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid #dbc49b;
+  border-radius: 999px;
+  background: #fff4de;
+  font-size: 13px;
+}
+
+@media (max-width: 760px) {
+  .lod-theme::after {
+    width: 140px;
+    height: 140px;
+    right: 6px;
+    bottom: 6px;
+  }
+
+  .container::before {
+    display: none;
+  }
+
+  .container {
+    padding: 12px 8px 26px;
+  }
+
+  .hero {
+    padding: 16px 12px 12px;
+  }
+
+  .hero h1 {
+    font-size: 24px;
+  }
+
+  .panel {
+    padding: 11px;
+  }
+}
