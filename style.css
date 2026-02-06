@@ -88,18 +88,34 @@ body {
   box-shadow: 0 22px 44px rgba(0, 0, 0, 0.35), inset 0 0 0 1px #f9e9c8;
 }
 
-.contact-link {
+.hero-nav {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 0;
+  left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: 100%;
+  text-align: right;
+}
+
+.hero-pill {
   padding: 6px 10px;
   border-radius: 999px;
   border: 1px solid #b88a4a;
-  background: #fff3d9;
+  background: linear-gradient(180deg, #fff4dc 0%, #efd9b2 100%);
   color: #3a240f;
   text-decoration: none;
   font-size: 12px;
   font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 1px 2px rgba(58, 36, 15, 0.12);
+}
+
+.hero-pill:hover {
+  filter: brightness(1.03);
 }
 
 .crest {
@@ -456,6 +472,33 @@ textarea {
   background: #fff4de;
 }
 
+.legal p {
+  margin: 8px 0 0;
+  color: #5f4831;
+  line-height: 1.6;
+}
+
+.legal-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: #5f4831;
+}
+
+.site-footer {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px #f9eccc, 0 8px 22px rgba(0, 0, 0, 0.15);
+}
+
+.footer-meta {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #6b533a;
+}
+
 @media (max-width: 760px) {
   .lod-theme::after {
     width: 140px;
@@ -478,6 +521,12 @@ textarea {
 
   .hero h1 {
     font-size: 24px;
+  }
+
+  .hero-nav {
+    top: 8px;
+    right: 0;
+    max-width: 100%;
   }
 
   .panel {
