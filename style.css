@@ -164,6 +164,41 @@ body {
   font-size: 19px;
 }
 
+.panel-toggle {
+  margin: 0;
+}
+
+.panel-toggle summary {
+  list-style: none;
+  cursor: pointer;
+  font-weight: 700;
+  color: #2f2214;
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.panel-toggle summary::-webkit-details-marker {
+  display: none;
+}
+
+.panel-toggle summary::after {
+  content: "▾";
+  font-size: 16px;
+  color: #7a5831;
+  transition: transform 0.2s ease;
+}
+
+.panel-toggle[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.panel-body {
+  margin-top: 10px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
